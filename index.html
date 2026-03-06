@@ -811,8 +811,8 @@ function renderMap(){
   }
   mapDiv.style.background='';
   mapDiv.style.display='';
-  mapDiv.innerHTML='';
   if(!leafMap){
+    mapDiv.innerHTML='';
     leafMap = L.map('map-leaflet',{center:[13.0,101.5],zoom:6,scrollWheelZoom:true});
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
       attribution:'&copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>',
