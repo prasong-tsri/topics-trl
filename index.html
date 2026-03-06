@@ -126,10 +126,6 @@ nav{background:#003087;border-bottom:3px solid #F7941D;padding:0 20px;display:fl
 .main-tab-pane{display:none}
 .main-tab-pane.active{display:block}
 
-/* MAP TAB FILTERS */
-.map-filter-row{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;align-items:flex-end}
-.map-filter-group{display:flex;flex-direction:column;gap:4px;min-width:160px}
-.map-filter-label{font-size:.78rem;font-weight:800;color:#003087;text-transform:uppercase;letter-spacing:.5px}
 
 /* TOOLTIP */
 .tt{position:fixed;background:#1a2a4a;color:#fff;border-radius:8px;padding:8px 12px;font-size:.8rem;pointer-events:none;z-index:9999;display:none;max-width:220px;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.3)}
@@ -192,6 +188,20 @@ nav{background:#003087;border-bottom:3px solid #F7941D;padding:0 20px;display:fl
     <div class="filter-title">🏛️ หน่วยงาน (TRL 4-6/7-9)</div>
     <select class="filter-select" id="f-org" onchange="applyFilters()">
       <option value="">ทุกหน่วยงาน</option>
+    </select>
+  </div>
+
+  <div class="filter-section" id="sidebar-map-filters" style="display:none">
+    <div class="filter-title">🗺️ ภาค</div>
+    <select class="filter-select" id="f-region" onchange="applyFilters()">
+      <option value="">ทุกภาค</option>
+    </select>
+  </div>
+
+  <div class="filter-section" id="sidebar-map-filters2" style="display:none">
+    <div class="filter-title">📍 จังหวัด</div>
+    <select class="filter-select" id="f-province" onchange="applyFilters()">
+      <option value="">ทุกจังหวัด</option>
     </select>
   </div>
 </div>
@@ -286,26 +296,6 @@ nav{background:#003087;border-bottom:3px solid #F7941D;padding:0 20px;display:fl
 
   <!-- ══ TAB: แผนที่จังหวัด ══ -->
   <div id="tab-map" class="main-tab-pane">
-    <div class="sec" style="margin-top:14px">
-      <div class="sec-head" style="margin-bottom:10px">
-        <h2>🔍 ตัวกรองแผนที่</h2>
-        <span class="sec-tag" style="background:#5a7a9a">Filter</span>
-      </div>
-      <div class="map-filter-row">
-        <div class="map-filter-group">
-          <span class="map-filter-label">🗺️ ภาค</span>
-          <select class="filter-select" id="f-region" onchange="applyFilters()">
-            <option value="">ทุกภาค</option>
-          </select>
-        </div>
-        <div class="map-filter-group">
-          <span class="map-filter-label">📍 จังหวัด</span>
-          <select class="filter-select" id="f-province" onchange="applyFilters()">
-            <option value="">ทุกจังหวัด</option>
-          </select>
-        </div>
-      </div>
-    </div>
 
     <!-- MAP SECTION -->
     <div class="sec" id="sec-map">
@@ -835,7 +825,10 @@ function switchMainTab(tab, btn){
   btn.classList.add('active');
   document.querySelectorAll('.main-tab-pane').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='map'){
+  const showMap = tab==='map';
+  document.getElementById('sidebar-map-filters').style.display = showMap ? '' : 'none';
+  document.getElementById('sidebar-map-filters2').style.display = showMap ? '' : 'none';
+  if(showMap){
     setTimeout(()=>{ renderMap(); if(leafMap) leafMap.invalidateSize(); },100);
   }
 }
